@@ -1,3 +1,8 @@
-import Picker from './picker';
+// Example usage of es6 picker module.
 
-document.getElementById('trigger').addEventListener('click', Picker.open);
+import Calendar from './calendar.js';
+
+document.querySelector('.as-datepicker').addEventListener('click', () => {
+	// should create layout and set events
+	Calendar.bootstrap();
+});
