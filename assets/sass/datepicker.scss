@@ -10,11 +10,38 @@
 		justify-content: center;
 	}
 	
-	.picker {
+	.calendar {
 		width:            20rem;
 		height:           85%;
 		background-color: #FFFFFF;
 		align-self:       center;
+		
+		.nav {
+			display:         flex;
+			justify-content: center;
+			align-items:     center;
+			
+			.previous, .next {
+				flex:            1 1 10%;
+				height:          2rem;
+				display:         flex;
+				justify-content: center;
+				align-items:     center;
+			}
+			.month {
+				flex:       1 1 80%;
+				text-align: center;
+			}
+		}
+		
+		.week-days {
+			display:    flex;
+			text-align: center;
+			
+			div {
+				flex: 1 1 14.285714286%;
+			}
+		}
 		
 		.days-wrapper {
 			text-align: center;
@@ -41,7 +68,6 @@
 					}
 				}
 			}
-			
 		}
 	}
 }
