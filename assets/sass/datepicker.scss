@@ -1,7 +1,8 @@
 #as-datetime-picker {
-	position:   fixed;
-	transition: all 1s ease;
-	z-index:    1000;
+	font-family: 'Raleway', sans-serif;
+	position:    fixed;
+	transition:  all 1s ease;
+	z-index:     1000;
 	
 	.wrapper {
 		display:         flex;
@@ -20,6 +21,7 @@
 			display:         flex;
 			justify-content: center;
 			align-items:     center;
+			height:          15%;
 			
 			.previous, .next {
 				flex:            1 1 10%;
@@ -35,8 +37,10 @@
 		}
 		
 		.week-days {
-			display:    flex;
-			text-align: center;
+			height:      20%;
+			display:     flex;
+			align-items: center;
+			text-align:  center;
 			
 			div {
 				flex: 1 1 14.285714286%;
@@ -44,27 +48,41 @@
 		}
 		
 		.days-wrapper {
+			height:     65%;
 			text-align: center;
+			
+			&.four {
+				.days-row {
+					height: 25%;
+				}
+			}
+			&.five {
+				.days-row {
+					height: 20%;
+				}
+			}
+			&.six {
+				.days-row {
+					height: 16.666666667%;
+				}
+			}
 			
 			.days-row {
 				display:         flex;
 				justify-content: center;
-				height:          4rem;
-				border-bottom:   1px solid black;
-				
-				&:first-of-type {
-					border-top: 1px solid black;
-				}
 				
 				.day {
-					flex:         1 1 14.285714286%;
-					align-self:   center;
-					height:       4rem;
-					line-height:  4rem;
+					flex:            1 1 14.285714286%;
+					align-self:      center;
+					height:          100%;
+					display:         flex;
+					justify-content: center;
+					align-items:     center;
+					transition:      all .75s ease;
+					border-radius:   1px;
 					
-					border-right: 1px solid black;
-					&:last-of-type {
-						border-right: none;
+					&:hover {
+						background-color: #DDDDDD;
 					}
 				}
 			}
