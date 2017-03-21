@@ -23,7 +23,9 @@ const _firstCalendarMonday = date => {
 const _lastCalendarSunday = date => {
 	const last = new Date(date);
 	last.setMonth(last.getMonth() + 1, 0);
-	last.setDate(last.getDate() + (7 - last.getDay()));
+	if (last.getDay() !== 0) {
+		last.setDate(last.getDate() + (7 - last.getDay()));
+	}
 	
 	return last;
 };
@@ -38,11 +40,13 @@ const _lastCalendarSunday = date => {
  */
 const getCalendarData = date => {
 	const data = [];
-	let first = _firstCalendarMonday(date);
 	const last = _lastCalendarSunday(date);
+	let first = _firstCalendarMonday(date);
+	let process = true;
 	
-	while (first.toString() !== last.toString()) {
+	while(process) {
 		data.push(new Date(first));
+		process = first.toString() !== last.toString();
 		first.setDate(first.getDate() + 1);
 	}
 	
