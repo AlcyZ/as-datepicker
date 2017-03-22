@@ -1,5 +1,15 @@
+$primary-color-dark: #5D4037;
+$primary-color: #795548;
+$primary-color-light: #FAFAFA;
+$primary-color-text: #FFFFFF;
+$secondary-color-text: rgba(255, 255, 255, 0.7);
+$accent-color: #4CAF50;
+$primary-text-color: #212121;
+$secondary-text-color: #757575;
+$divider-color: #BDBDBD;
+
 #as-datetime-picker {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	position:    fixed;
 	transition:  all 1s ease;
 	z-index:     1000;
@@ -12,78 +22,80 @@
 	}
 	
 	.calendar {
-		width:            20rem;
-		height:           85%;
+		height:           auto;
+		width:            50%;
+		margin:           auto;
 		background-color: #FFFFFF;
-		align-self:       center;
 		
+		// nav
 		.nav {
-			display:         flex;
-			justify-content: center;
-			align-items:     center;
-			height:          15%;
+			background-color: $primary-color-dark;
+			height:           4rem;
+			display:          flex;
+			text-align:       center;
+			color:            $primary-color-text;
 			
+			.previous {
+				border-right: 1px solid darken($primary-color-dark, 10);
+			}
+			.next {
+				border-left: 1px solid darken($primary-color-dark, 10);
+			}
 			.previous, .next {
-				flex:            1 1 10%;
-				height:          2rem;
-				display:         flex;
-				justify-content: center;
-				align-items:     center;
+				flex:       1 1 0;
+				width:      20%;
+				cursor:     pointer;
+				transition: background-color .5s ease;
+				
+				&:hover {
+					background-color: darken($primary-color-dark, 5);
+				}
 			}
 			.month {
-				flex:       1 1 80%;
-				text-align: center;
+				width: 60%;
+			}
+			.previous, .next, .month {
+				display:         flex;
+				align-items:     center;
+				justify-content: center;
 			}
 		}
 		
+		// weekdays
 		.week-days {
-			height:      20%;
-			display:     flex;
-			align-items: center;
-			text-align:  center;
+			background-color: $primary-color;
+			display:          flex;
+			height:           2rem;
+			color:            $primary-color-text;
 			
 			div {
-				flex: 1 1 14.285714286%;
+				&:not(:last-of-type) {
+					border-right: 1px solid darken($primary-color, 10);
+				}
+				flex:            1 1 0;
+				width:           14.285714286%;
+				display:         flex;
+				align-items:     center;
+				justify-content: center;
 			}
 		}
 		
-		.days-wrapper {
-			height:     65%;
-			text-align: center;
+		// days
+		.week {
+			display:       flex;
+			height:        3rem;
+			border-bottom: 1px solid $divider-color;
+			color:         $primary-text-color;
 			
-			&.four {
-				.days-row {
-					height: 25%;
-				}
-			}
-			&.five {
-				.days-row {
-					height: 20%;
-				}
-			}
-			&.six {
-				.days-row {
-					height: 16.666666667%;
-				}
-			}
-			
-			.days-row {
+			.day {
+				flex:            1 1 0;
+				width:           14.285714286%;
 				display:         flex;
+				align-items:     center;
 				justify-content: center;
 				
-				.day {
-					flex:            1 1 14.285714286%;
-					align-self:      center;
-					height:          100%;
-					display:         flex;
-					justify-content: center;
-					align-items:     center;
-					transition:      all .75s ease;
-					border-radius:   1px;
-					
-					&:hover {
-						background-color: #DDDDDD;
-					}
+				&:not(:first-of-type) {
+					border-left: 1px solid $divider-color;
 				}
 			}
 		}

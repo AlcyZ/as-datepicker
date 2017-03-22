@@ -51,14 +51,19 @@ const _createCalendarNav = date => {
 	const previous = document.createElement('div');
 	const next = document.createElement('div');
 	
-	const previousIcon = document.createElement('img');
-	const nextIcon = document.createElement('img');
+	const previousIcon = document.createElement('i');
+	const nextIcon = document.createElement('i');
+	
+	previousIcon.classList.add('material-icons');
+	previousIcon.innerText = 'arrow_back';
+	nextIcon.classList.add('material-icons');
+	nextIcon.innerText = 'arrow_forward';
 	
 	month = document.createElement('div');
 	
 	// Todo: Icon path configurable
-	previousIcon.setAttribute('src', '../assets/icons/ic_arrow_back_black_24px.svg');
-	nextIcon.setAttribute('src', '../assets/icons/ic_arrow_forward_black_24px.svg');
+	// previousIcon.setAttribute('src', '../assets/icons/ic_keyboard_arrow_left_white_24px.svg');
+	// nextIcon.setAttribute('src', '../assets/icons/ic_keyboard_arrow_right_white_24px.svg');
 	
 	nav.classList.add('nav');
 	previous.classList.add('previous');
@@ -121,7 +126,7 @@ const _createDays = date => {
 	for (; i < data.length; i++) {
 		if (i % 7 === 0) {
 			row = document.createElement('div');
-			row.classList.add('days-row');
+			row.classList.add('week');
 		}
 		day = document.createElement('div');
 		day.classList.add('day');

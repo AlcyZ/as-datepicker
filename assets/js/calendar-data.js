@@ -44,8 +44,12 @@ const getCalendarData = date => {
 	let first = _firstCalendarMonday(date);
 	let process = true;
 	
+	first.setHours(0, 0, 0, 0);
+	last.setHours(0, 0, 0, 0);
+	
 	while(process) {
 		data.push(new Date(first));
+		// console.log(first.toString(), last.toString());
 		process = first.toString() !== last.toString();
 		first.setDate(first.getDate() + 1);
 	}
