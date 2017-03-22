@@ -1,15 +1,21 @@
 $primary-color-dark: #5D4037;
 $primary-color: #795548;
 $primary-color-light: #FAFAFA;
-$primary-color-text: #FFFFFF;
-$secondary-color-text: rgba(255, 255, 255, 0.7);
 $accent-color: #4CAF50;
-$primary-text-color: #212121;
-$secondary-text-color: #757575;
-$divider-color: #BDBDBD;
+
+$primary-light-text-color: rgba(255, 255, 255, .87);
+$secondary-light-text-color: rgba(255, 255, 255, .54);
+$disabled-light-text-color: rgba(255, 255, 255, .38);
+$divider-light-color: rgba(255, 255, 255, .12);
+
+$primary-dark-text-color: rgba(0, 0, 0, .87);
+$secondary-dark-text-color: rgba(0, 0, 0, .54);
+$disabled-dark-text-color: rgba(0, 0, 0, .38);
+$divider-dark-color: rgba(0, 0, 0, .12);
 
 #as-datetime-picker {
 	font-family: 'Roboto', sans-serif;
+	color:       $primary-dark-text-color;
 	position:    fixed;
 	transition:  all 1s ease;
 	z-index:     1000;
@@ -33,13 +39,14 @@ $divider-color: #BDBDBD;
 			height:           4rem;
 			display:          flex;
 			text-align:       center;
-			color:            $primary-color-text;
+			color:            $primary-light-text-color;
+			border-bottom:    1px solid $divider-light-color;
 			
 			.previous {
-				border-right: 1px solid darken($primary-color-dark, 10);
+				border-right: 1px solid $divider-light-color;
 			}
 			.next {
-				border-left: 1px solid darken($primary-color-dark, 10);
+				border-left: 1px solid $divider-light-color;
 			}
 			.previous, .next {
 				flex:       1 1 0;
@@ -66,11 +73,12 @@ $divider-color: #BDBDBD;
 			background-color: $primary-color;
 			display:          flex;
 			height:           2rem;
-			color:            $primary-color-text;
+			color:            $primary-light-text-color;
+			border-bottom:    1px solid $divider-light-color;
 			
 			div {
 				&:not(:last-of-type) {
-					border-right: 1px solid darken($primary-color, 10);
+					border-right: 1px solid $divider-light-color;
 				}
 				flex:            1 1 0;
 				width:           14.285714286%;
@@ -84,8 +92,7 @@ $divider-color: #BDBDBD;
 		.week {
 			display:       flex;
 			height:        3rem;
-			border-bottom: 1px solid $divider-color;
-			color:         $primary-text-color;
+			border-bottom: 1px solid $divider-dark-color;
 			
 			.day {
 				flex:            1 1 0;
@@ -95,7 +102,57 @@ $divider-color: #BDBDBD;
 				justify-content: center;
 				
 				&:not(:first-of-type) {
-					border-left: 1px solid $divider-color;
+					border-left: 1px solid $divider-dark-color;
+				}
+			}
+		}
+		
+		// actions
+		.actions-wrapper {
+			.preview-wrapper {
+				display:          flex;
+				height:           2rem;
+				background-color: $primary-color-light;
+				color:            $secondary-dark-text-color;
+				
+				.preview {
+					display:         flex;
+					justify-content: center;
+					align-items:     center;
+					width:           100%;
+					
+				}
+			}
+			
+			.btn-wrapper {
+				display: flex;
+				height:  3rem;
+				
+				.reset, .submit {
+					flex:  1 1 0;
+					width: 50%;
+				}
+				button {
+					border:           none;
+					height:           100%;
+					width:            100%;
+					background-color: $accent-color;
+					transition:       background-color .3s ease;
+					cursor:           pointer;
+					font-size:        16px;
+					color:            $primary-light-text-color;
+					
+					&:hover {
+						background-color: darken($accent-color, 5);
+					}
+					&:focus {
+						outline:          none;
+						background-color: darken($accent-color, 10);
+					}
+					
+					&:first-of-type {
+						border-right: 1px solid $divider-light-color;
+					}
 				}
 			}
 		}
