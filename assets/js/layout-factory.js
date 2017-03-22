@@ -38,6 +38,7 @@ const calendarId = guidGenerator();
 let calendar;
 let month;
 let daysWrapper;
+let actions;
 
 /**
  * Creates the dom of the calendar's month navigation.
@@ -145,6 +146,44 @@ const _createDays = date => {
 };
 
 /**
+ * Creates the actions.
+ * There is a preview of the selected date and buttons to reset and submit the selected date.
+ * @private
+ */
+const _createActions = () => {
+	const wrapper = document.createElement('div');
+	const previewWrapper = document.createElement('div');
+	const preview = document.createElement('div');
+	const actionsWrapper = document.createElement('div');
+	const reset = document.createElement('div');
+	const submit = document.createElement('div');
+	const resetBtn = document.createElement('button');
+	const submitBtn = document.createElement('button');
+	
+	// set element classes and inner text
+	wrapper.classList.add('actions-wrapper');
+	previewWrapper.classList.add('preview-wrapper');
+	preview.classList.add('preview');
+	actionsWrapper.classList.add('btn-wrapper');
+	reset.classList.add('reset');
+	submit.classList.add('submit');
+	resetBtn.innerText = 'Reset';
+	submitBtn.innerText = 'Submit';
+	preview.innerText = '22-03-2017';
+	
+	// connect dom elements
+	reset.appendChild(resetBtn);
+	submit.appendChild(submitBtn);
+	actionsWrapper.appendChild(reset);
+	actionsWrapper.appendChild(submit);
+	previewWrapper.appendChild(preview);
+	wrapper.appendChild(previewWrapper);
+	wrapper.appendChild(actionsWrapper);
+	
+	return wrapper;
+};
+
+/**
  * Public methods to create the date-picker layout
  */
 export default {
@@ -178,10 +217,12 @@ export default {
 		calendar = document.createElement('div');
 		calendar.setAttribute('id', calendarId);
 		calendar.classList.add('calendar');
+		actions = _createActions();
 		
 		calendar.appendChild(_createCalendarNav(date));
 		calendar.appendChild(_createCalendarWeekdays());
-		calendar.appendChild(_createDays(date));
+		calendar.appendChild(actions);
+		calendar.insertBefore(_createDays(date), actions);
 		
 		return calendar;
 	},
@@ -191,7 +232,7 @@ export default {
 	 */
 	rebuildCalendar: date => {
 		daysWrapper.remove();
-		calendar.appendChild(_createDays(date));
+		calendar.insertBefore(_createDays(date), actions);
 		month.innerText = date.getMonthName() + ' (' + date.getFullYear() + ')';
 	},
 	/**
