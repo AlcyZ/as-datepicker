@@ -49,7 +49,6 @@ const getCalendarData = date => {
 	
 	while(process) {
 		data.push(new Date(first));
-		// console.log(first.toString(), last.toString());
 		process = first.toString() !== last.toString();
 		first.setDate(first.getDate() + 1);
 	}
