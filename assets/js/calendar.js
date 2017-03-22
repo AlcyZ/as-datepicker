@@ -32,6 +32,7 @@ const _createLayout = () => {
 const _setEvents = () => {
 	// static event handler
 	Events.close(overlay, wrapper);
+	Events.selectDate(date);
 	
 	// dynamic calls of events
 	document.querySelector('.previous').addEventListener('click', e => Events.previous(e, date));

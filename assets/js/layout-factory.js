@@ -1,4 +1,5 @@
 import calendarData from './calendar-data';
+import Events from './events';
 
 // prototype helper for date object
 (function() {
@@ -39,6 +40,7 @@ let calendar;
 let month;
 let daysWrapper;
 let actions;
+let preview;
 
 /**
  * Creates the dom of the calendar's month navigation.
@@ -61,10 +63,6 @@ const _createCalendarNav = date => {
 	nextIcon.innerText = 'arrow_forward';
 	
 	month = document.createElement('div');
-	
-	// Todo: Icon path configurable
-	// previousIcon.setAttribute('src', '../assets/icons/ic_keyboard_arrow_left_white_24px.svg');
-	// nextIcon.setAttribute('src', '../assets/icons/ic_keyboard_arrow_right_white_24px.svg');
 	
 	nav.classList.add('nav');
 	previous.classList.add('previous');
@@ -115,7 +113,6 @@ const _createDays = date => {
 	const data = calendarData(date);
 	let i = 0;
 	let day;
-	let dayInner;
 	let row;
 	
 	daysWrapper = document.createElement('div');
@@ -129,13 +126,12 @@ const _createDays = date => {
 			row = document.createElement('div');
 			row.classList.add('week');
 		}
+		
 		day = document.createElement('div');
 		day.classList.add('day');
+		date.getMonth() !== data[i].getMonth() ? day.classList.add('other-month') : null;
+		day.innerText = data[i].getDate();
 		
-		dayInner = document.createElement('div');
-		dayInner.innerText = data[i].getDate();
-		
-		day.appendChild(dayInner);
 		row.appendChild(day);
 		if (i % 7 === 6) {
 			daysWrapper.appendChild(row);
@@ -153,12 +149,12 @@ const _createDays = date => {
 const _createActions = () => {
 	const wrapper = document.createElement('div');
 	const previewWrapper = document.createElement('div');
-	const preview = document.createElement('div');
 	const actionsWrapper = document.createElement('div');
 	const reset = document.createElement('div');
 	const submit = document.createElement('div');
 	const resetBtn = document.createElement('button');
 	const submitBtn = document.createElement('button');
+	preview = document.createElement('div');
 	
 	// set element classes and inner text
 	wrapper.classList.add('actions-wrapper');
@@ -169,7 +165,6 @@ const _createActions = () => {
 	submit.classList.add('submit');
 	resetBtn.innerText = 'Reset';
 	submitBtn.innerText = 'Submit';
-	preview.innerText = '22-03-2017';
 	
 	// connect dom elements
 	reset.appendChild(resetBtn);
@@ -234,11 +229,21 @@ export default {
 		daysWrapper.remove();
 		calendar.insertBefore(_createDays(date), actions);
 		month.innerText = date.getMonthName() + ' (' + date.getFullYear() + ')';
+		Events.selectDate(date);
 	},
 	/**
 	 * Returns the id of the calendar.
 	 */
 	getCalendarId: () => {
 		return calendarId;
+	},
+	selectDate: (day, date) => {
+		const selected = new Date(date);
+		let dayValue;
+		selected.setMonth(selected.getMonth(), day);
+		
+		dayValue = selected.getFullYear() + '-' + (selected.getMonth() + 1) + '-' + selected.getDate();
+		
+		preview.innerText = dayValue;
 	}
 }

@@ -32,5 +32,16 @@ export default {
 		overlay.addEventListener('click', e => {
 			e.target === wrapper || e.target === overlay ? overlay.remove() : null;
 		});
+	},
+	
+	selectDate: date => {
+		const days = document.getElementsByClassName('day');
+		let i = 0;
+		
+		for (; i < days.length; i++) {
+			days[i].addEventListener('click', e => {
+				LayoutFactory.selectDate(e.target.innerText, date);
+			})
+		}
 	}
 }
