@@ -32,7 +32,10 @@ const _createLayout = () => {
 const _setEvents = () => {
 	// static event handler
 	Events.close(overlay, wrapper);
+	Events.reset();
 	Events.selectDate(date);
+	Events.hoursValidator();
+	Events.minutesValidator();
 	
 	// dynamic calls of events
 	document.querySelector('.previous').addEventListener('click', e => Events.previous(e, date));
