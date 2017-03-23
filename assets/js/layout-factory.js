@@ -1,5 +1,6 @@
 import calendarData from './calendar-data';
 import Events from './events';
+import formatter from './formater';
 
 // prototype helper for date object
 (function() {
@@ -41,6 +42,8 @@ let month;
 let daysWrapper;
 let actions;
 let preview;
+
+let selected;
 
 /**
  * Creates the dom of the calendar's month navigation.
@@ -156,6 +159,12 @@ const _createActions = () => {
 	const submitBtn = document.createElement('button');
 	preview = document.createElement('div');
 	
+	const timeWrapper = document.createElement('div');
+	const timeInputs = document.createElement('div');
+	const timeTitle = document.createElement('div');
+	const hours = document.createElement('input');
+	const minutes = document.createElement('input');
+	
 	// set element classes and inner text
 	wrapper.classList.add('actions-wrapper');
 	previewWrapper.classList.add('preview-wrapper');
@@ -166,12 +175,26 @@ const _createActions = () => {
 	resetBtn.innerText = 'Reset';
 	submitBtn.innerText = 'Submit';
 	
+	timeWrapper.classList.add('time-wrapper');
+	timeInputs.classList.add('time-input');
+	timeTitle.classList.add('time-title');
+	timeTitle.innerText = 'Time:';
+	hours.classList.add('hours');
+	hours.setAttribute('placeholder', 'hours');
+	minutes.classList.add('minutes');
+	minutes.setAttribute('placeholder', 'minutes');
+	
 	// connect dom elements
 	reset.appendChild(resetBtn);
 	submit.appendChild(submitBtn);
+	timeInputs.appendChild(hours);
+	timeInputs.appendChild(minutes);
+	timeWrapper.appendChild(timeTitle);
+	timeWrapper.appendChild(timeInputs);
 	actionsWrapper.appendChild(reset);
 	actionsWrapper.appendChild(submit);
 	previewWrapper.appendChild(preview);
+	previewWrapper.appendChild(timeWrapper);
 	wrapper.appendChild(previewWrapper);
 	wrapper.appendChild(actionsWrapper);
 	
@@ -237,13 +260,22 @@ export default {
 	getCalendarId: () => {
 		return calendarId;
 	},
+	/**
+	 * Selects a date.
+	 * @param {string} day
+	 * @param {Date} date
+	 */
 	selectDate: (day, date) => {
-		const selected = new Date(date);
-		let dayValue;
+		selected = new Date(date);
 		selected.setMonth(selected.getMonth(), day);
 		
-		dayValue = selected.getFullYear() + '-' + (selected.getMonth() + 1) + '-' + selected.getDate();
-		
-		preview.innerText = dayValue;
+		preview.innerText = formatter('dd.mm.yyyy', selected);
+	},
+	/**
+	 * Resets the current selected date.
+	 */
+	reset: () => {
+		selected = null;
+		preview.innerText = '';
 	}
 }
