@@ -34,6 +34,17 @@ export default {
 		});
 	},
 	
+	/**
+	 * Resets the current date of the picker
+	 */
+	reset: () => {
+		document.querySelector('.reset button').addEventListener('click', LayoutFactory.reset);
+	},
+	
+	/**
+	 * Sets the event listener for picking a date.
+	 * @param date
+	 */
 	selectDate: date => {
 		const days = document.getElementsByClassName('day');
 		let i = 0;
@@ -43,5 +54,45 @@ export default {
 				LayoutFactory.selectDate(e.target.innerText, date);
 			})
 		}
+	},
+	
+	/**
+	 * Set event listener to validate the hours input field.
+	 * Only integers between 0 and 23 are allowed.
+	 */
+	hoursValidator: () => {
+		document.querySelector('input.hours').addEventListener('keyup', e => {
+			if (!Number.isInteger(Number(e.target.value))) {
+				e.target.value = '';
+			}
+			
+			if (Number(e.target.value) > 23) {
+				e.target.value = '23';
+			}
+			
+			if (Number(e.target.value) < 0) {
+				e.target.value = '0';
+			}
+		})
+	},
+	
+	/**
+	 * Set event listener to validate the hours input field.
+	 * Only integers between 0 and 59 are allowed.
+	 */
+	minutesValidator: () => {
+		document.querySelector('input.minutes').addEventListener('keyup', e => {
+			if (!Number.isInteger(Number(e.target.value))) {
+				e.target.value = '';
+			}
+			
+			if (Number(e.target.value) > 59) {
+				e.target.value = '59';
+			}
+			
+			if (Number(e.target.value) < 0) {
+				e.target.value = '0';
+			}
+		})
 	}
 }
