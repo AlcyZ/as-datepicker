@@ -29,13 +29,14 @@ const _createLayout = () => {
  * Sets event listener for calendar events.
  * @private
  */
-const _setEvents = () => {
+const _setEvents = e => {
 	// static event handler
 	Events.close(overlay, wrapper);
 	Events.reset();
 	Events.selectDate(date);
 	Events.hoursValidator();
 	Events.minutesValidator();
+	Events.submit(e.target);
 	
 	// dynamic calls of events
 	document.querySelector('.previous').addEventListener('click', e => Events.previous(e, date));
@@ -43,8 +44,8 @@ const _setEvents = () => {
 };
 
 export default {
-	bootstrap: function() {
+	bootstrap: e => {
 		_createLayout();
-		_setEvents();
+		_setEvents(e);
 	}
 }

@@ -1,4 +1,5 @@
 import LayoutFactory from './layout-factory';
+import formatter from './formater';
 
 export default {
 	/**
@@ -93,6 +94,31 @@ export default {
 			if (Number(e.target.value) < 0) {
 				e.target.value = '0';
 			}
+		})
+	},
+	
+	/**
+	 * Submit and add the selected values to the input field.
+	 * @param input
+	 */
+	submit: function(input) {
+		document.querySelector('.submit button').addEventListener('click', () => {
+			const selected = LayoutFactory.getSelected();
+			if (undefined === selected) {
+				return;
+			}
+			const date = formatter('yyyy-mm-dd', LayoutFactory.getSelected());
+			const hours = document.querySelector('input.hours').value;
+			const minutes = document.querySelector('input.minutes').value;
+			LayoutFactory.reset();
+			
+			if (minutes !== '' && hours !== '') {
+				input.value = date + ' ' + hours + ':' + minutes;
+			} else {
+				input.value = date;
+			}
+			
+			document.getElementById('as-datetime-picker').remove();
 		})
 	}
 }

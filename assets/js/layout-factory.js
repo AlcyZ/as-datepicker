@@ -277,5 +277,12 @@ export default {
 	reset: () => {
 		selected = null;
 		preview.innerText = '';
+	},
+	/**
+	 * Returns the selected date.
+	 * @returns {*}
+	 */
+	getSelected: () => {
+		return selected;
 	}
 }
