@@ -4,7 +4,6 @@ This project is in development. There is no stable version at the moment.
 However, if you wish you can take a look at the preview in ./example/index.html.
 
 ### Picker Widget
-Inline-style: 
 ![alt text](./datepicker-preview.png "Datepicker Widget Preview")
 
 
