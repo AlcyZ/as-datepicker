@@ -2,7 +2,4 @@
 
 import Calendar from './calendar.js';
 
-document.querySelector('.as-datepicker').addEventListener('click', () => {
-	// should create layout and set events
-	Calendar.bootstrap();
-});
+document.getElementById('date-input').addEventListener('focus', Calendar.bootstrap);
