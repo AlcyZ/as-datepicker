@@ -39,8 +39,10 @@ const _setEvents = e => {
 	Events.submit(e.target);
 	
 	// dynamic calls of events
-	document.querySelector('.previous').addEventListener('click', e => Events.previous(e, date));
-	document.querySelector('.next').addEventListener('click', e => Events.next(e, date));
+	document.querySelector('#' + LayoutFactory.getCalendarId() + ' .previous')
+		.addEventListener('click', e => Events.previous(e, date));
+	document.querySelector('#' + LayoutFactory.getCalendarId() + ' .next')
+		.addEventListener('click', e => Events.next(e, date));
 };
 
 export default {

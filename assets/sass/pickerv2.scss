@@ -1,0 +1,195 @@
+$primary-color-dark: #5D4037;
+$primary-color: #795548;
+$primary-color-light: #FAFAFA;
+$accent-color: #4CAF50;
+
+$primary-light-text-color: rgba(255, 255, 255, .87);
+$secondary-light-text-color: rgba(255, 255, 255, .54);
+$disabled-light-text-color: rgba(255, 255, 255, .38);
+$divider-light-color: rgba(255, 255, 255, .12);
+
+$primary-dark-text-color: rgba(0, 0, 0, .87);
+$secondary-dark-text-color: rgba(0, 0, 0, .54);
+$disabled-dark-text-color: rgba(0, 0, 0, .38);
+$divider-dark-color: rgba(0, 0, 0, .12);
+
+#as-datepicker {
+	font-family: 'Roboto', sans-serif;
+	color:       $primary-dark-text-color;
+	
+	&.overlay {
+		position:         fixed;
+		transition:       all 1s ease;
+		z-index:          1000;
+		background-color: rgba(0, 0, 0, 0.8);;
+		
+		.wrapper {
+			display:         flex;
+			height:          100vh;
+			width:           100vw;
+			justify-content: center;
+			
+			.calendar-wrapper {
+				height:           auto;
+				width:            20rem;
+				background-color: #FFFFFF;
+				margin:           auto;
+				
+				.day-name-wrapper {
+					height:           3rem;
+					display:          flex;
+					align-items:      center;
+					justify-content:  center;
+					background-color: $primary-color-dark;
+					color:            $primary-light-text-color;
+					box-shadow:       0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				}
+				
+				.display {
+					height:           8rem;
+					display:          flex;
+					flex-direction:   column;
+					background-color: $primary-color;
+					color:            $primary-light-text-color;
+					box-shadow:       0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+					
+					.day, .month, .year {
+						flex:            1 1 0;
+						display:         flex;
+						align-items:     center;
+						justify-content: center;
+					}
+					
+					.day {
+						flex:      1 1 25%;
+						font-size: 42px;
+					}
+					
+					.year {
+						color: $disabled-light-text-color;
+					}
+				}
+				
+				.calendar {
+					.navigation {
+						display: flex;
+						height:  2rem;
+						padding: .5rem 0;
+						
+						div {
+							flex:            1 1 0;
+							text-align:      center;
+							height:          inherit;
+							display:         flex;
+							align-items:     center;
+							justify-content: center;
+							transition:      all .5s ease;
+							cursor:          pointer;
+							
+							&:hover {
+								box-shadow: 0 1px 2px $disabled-dark-text-color;
+							}
+						}
+						.previous {
+						}
+						.next {
+						}
+					}
+					
+					.weekday-names {
+						display:    flex;
+						text-align: center;
+						height:     1.5rem;
+						color:      $secondary-dark-text-color;
+						
+						div {
+							flex: 1 1 0;
+						}
+					}
+					
+					.days {
+						color: $primary-dark-text-color;
+						.row {
+							display:     flex;
+							text-align:  center;
+							height:      2.5rem;
+							align-items: center;
+							
+							div {
+								flex:            1 1 0;
+								height:          100%;
+								display:         flex;
+								justify-content: center;
+								align-items:     center;
+								cursor:          pointer;
+								transition:      box-shadow .4s ease;
+								
+								&:hover {
+									box-shadow: 0 3px 2px $disabled-dark-text-color;
+								}
+							}
+						}
+					}
+				}
+				
+				.time-picker {
+					display: flex;
+					height:  3rem;
+					
+					input {
+						flex:       1 1 0;
+						width:      50%;
+						border:     none;
+						text-align: center;
+						
+						&:first-of-type {
+							border-right: 1px solid $divider-dark-color;
+						}
+						
+						&:focus {
+							outline: none;
+						}
+					}
+				}
+				
+				.actions {
+					display: flex;
+					height:  2rem;
+					
+					div {
+						flex:   1 1 0;
+						height: 100%;
+						
+						button {
+							border:           none;
+							height:           100%;
+							width:            100%;
+							background-color: $primary-light-text-color;
+							transition:       background-color .3s ease;
+							cursor:           pointer;
+							font-size:        16px;
+							color:            $accent-color;
+							
+							&:hover {
+								background-color: darken($accent-color, 5);
+								color:            $primary-light-text-color;
+							}
+							&:focus {
+								outline:          none;
+								background-color: darken($accent-color, 10);
+								color:            $primary-light-text-color;
+							}
+							
+							&:first-of-type {
+								border-right: 1px solid $divider-light-color;
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		
+	}
+	
+}

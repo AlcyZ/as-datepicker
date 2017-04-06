@@ -39,7 +39,8 @@ export default {
 	 * Resets the current date of the picker
 	 */
 	reset: () => {
-		document.querySelector('.reset button').addEventListener('click', LayoutFactory.reset);
+		document.querySelector('#' + LayoutFactory.getCalendarId() + ' .reset button')
+			.addEventListener('click', LayoutFactory.reset);
 	},
 	
 	/**
@@ -62,7 +63,7 @@ export default {
 	 * Only integers between 0 and 23 are allowed.
 	 */
 	hoursValidator: () => {
-		document.querySelector('input.hours').addEventListener('keyup', e => {
+		document.querySelector('#' + LayoutFactory.getCalendarId() + ' input.hours').addEventListener('keyup', e => {
 			if (!Number.isInteger(Number(e.target.value))) {
 				e.target.value = '';
 			}
@@ -82,7 +83,7 @@ export default {
 	 * Only integers between 0 and 59 are allowed.
 	 */
 	minutesValidator: () => {
-		document.querySelector('input.minutes').addEventListener('keyup', e => {
+		document.querySelector('#' + LayoutFactory.getCalendarId() + ' input.minutes').addEventListener('keyup', e => {
 			if (!Number.isInteger(Number(e.target.value))) {
 				e.target.value = '';
 			}
@@ -102,23 +103,24 @@ export default {
 	 * @param input
 	 */
 	submit: function(input) {
-		document.querySelector('.submit button').addEventListener('click', () => {
-			const selected = LayoutFactory.getSelected();
-			if (undefined === selected) {
-				return;
-			}
-			const date = formatter('yyyy-mm-dd', LayoutFactory.getSelected());
-			const hours = document.querySelector('input.hours').value;
-			const minutes = document.querySelector('input.minutes').value;
-			LayoutFactory.reset();
-			
-			if (minutes !== '' && hours !== '') {
-				input.value = date + ' ' + hours + ':' + minutes;
-			} else {
-				input.value = date;
-			}
-			
-			document.getElementById('as-datetime-picker').remove();
-		})
+		document.querySelector('#' + LayoutFactory.getCalendarId() + ' .submit button')
+			.addEventListener('click', () => {
+				const selected = LayoutFactory.getSelected();
+				if (undefined === selected) {
+					return;
+				}
+				const date = formatter('yyyy-mm-dd', LayoutFactory.getSelected());
+				const hours = document.querySelector('#' + LayoutFactory.getCalendarId() + ' input.hours').value;
+				const minutes = document.querySelector('#' + LayoutFactory.getCalendarId() + ' input.minutes').value;
+				LayoutFactory.reset();
+				
+				if (minutes !== '' && hours !== '') {
+					input.value = date + ' ' + hours + ':' + minutes;
+				} else {
+					input.value = date;
+				}
+				
+				document.getElementById('as-datetime-picker').remove();
+			})
 	}
 }
