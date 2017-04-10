@@ -44,6 +44,10 @@ export default {
         document.querySelector('.reset button').addEventListener('click', Builder.reset);
     },
 
+    today: () => {
+        document.querySelector('.today button').addEventListener('click', Builder.today);
+    },
+
     selectDate: _selectDate,
 
     hoursValidator: () => {

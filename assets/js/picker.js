@@ -21,6 +21,7 @@ const _setEvents = e => {
     Events.close();
     Events.selectDate(date);
     Events.reset();
+    Events.today();
 
     Events.hoursValidator();
     Events.minutesValidator();

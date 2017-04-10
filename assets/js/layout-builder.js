@@ -101,6 +101,14 @@ export default {
         year.innerText = '';
     },
 
+    today: () => {
+        const date = new Date();
+        dayNameWrapper.innerText = Lang.weekdays[date.getDay()];
+        month.innerText = Lang.months[date.getMonth()];
+        day.innerText = date.getDate();
+        year.innerText = date.getFullYear();
+    },
+
     getOverlay: () => {
         return overlay;
     },
