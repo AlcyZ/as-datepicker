@@ -1,280 +1,246 @@
 import calendarData from './calendar-data';
-import Events from './events';
-import formatter from './formater';
-
-// prototype helper for date object
-(function() {
-	Date.prototype.getMonthName = function() {
-		const months = [
-			'Januar',
-			'Februar',
-			'März',
-			'April',
-			'Mai',
-			'Juni',
-			'Juli',
-			'August',
-			'September',
-			'Oktober',
-			'November',
-			'Dezember'
-		];
-		
-		return months[this.getMonth()];
-	}
-})();
-
-const _rndId = () => {
-	return 'as-datepicker-' + ((1 + Math.random()) * 0x10000 | 0).toString();
-};
-
-const calendarId = _rndId();
-let calendar;
-let month;
-let daysWrapper;
-let actions;
-let preview;
-
-let selected;
+import Lang from './lang';
 
 /**
- * Creates the dom of the calendar's month navigation.
+ * Creates a new div dom node with the given class attribute. Optionally, an inner text will be added.
+ * This helper method is used most of the time to factory the dom nodes of the date-picker.
+ *
+ * @param {string} className Name of class to be added,
+ * @param {string} innerText Value of inner text to be added.
+ * @returns {Element}
+ * @private
+ */
+const _factor = (className, innerText) => {
+    const element = document.createElement('div');
+    element.classList.add(className);
+
+    if (undefined !== innerText) {
+        element.innerText = innerText;
+    }
+
+    return element;
+};
+
+/**
+ * Creates the date pickers overlay.
+ *
+ * @returns {Element}
+ * @private
+ */
+const _createOverlay = () => {
+    const overlay = _factor('overlay');
+    overlay.setAttribute('id', 'as-datepicker');
+
+    return overlay;
+};
+
+/**
+ * Creates the date pickers wrapper.
+ *
+ * @returns {Element}
+ * @private
+ */
+const _createWrapper = () => {
+    return _factor('wrapper');
+};
+
+/**
+ * Creates the date pickers calendar wrapper.
+ *
+ * @returns {Element}
+ * @private
+ */
+const _createCalendarWrapper = () => {
+    return _factor('calendar-wrapper')
+};
+
+/**
+ * Creates the date pickers day name wrapper.
  *
  * @param date
  * @returns {Element}
  * @private
  */
-const _createCalendarNav = date => {
-	const nav = document.createElement('div');
-	const previous = document.createElement('div');
-	const next = document.createElement('div');
-	
-	const previousIcon = document.createElement('i');
-	const nextIcon = document.createElement('i');
-	
-	previousIcon.classList.add('material-icons');
-	previousIcon.innerText = 'arrow_back';
-	nextIcon.classList.add('material-icons');
-	nextIcon.innerText = 'arrow_forward';
-	
-	month = document.createElement('div');
-	
-	nav.classList.add('nav');
-	previous.classList.add('previous');
-	month.classList.add('month');
-	next.classList.add('next');
-	
-	previous.appendChild(previousIcon);
-	next.appendChild(nextIcon);
-	month.innerText = date.getMonthName() + ' (' + date.getFullYear() + ')';
-	
-	nav.appendChild(previous);
-	nav.appendChild(month);
-	nav.appendChild(next);
-	
-	return nav;
+const _createDayNameWrapper = date => {
+    return _factor('day-name-wrapper', /* Lang.weekdays[date.getDay()] */);
 };
 
 /**
- * Creates the dom of the calendar's weekdays.
+ * Creates the date pickers display.
  *
  * @returns {Element}
  * @private
  */
-const _createCalendarWeekdays = () => {
-	const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-	const wrapper = document.createElement('div');
-	let i = 0;
-	let day;
-	
-	wrapper.classList.add('week-days');
-	
-	for (; i < days.length; i++) {
-		day = document.createElement('div');
-		day.innerText = days[i];
-		wrapper.appendChild(day);
-	}
-	
-	return wrapper;
+const _createDisplay = () => {
+    return _factor('display');
 };
 
 /**
- * Creates the dom of the calendar's dates.
+ * Creates the date pickers display month.
+ *
  * @param date
  * @returns {Element}
  * @private
  */
+const _createMonth = date => {
+    return _factor('month', /* Lang.months[date.getMonth()] */);
+};
+
+/**
+ * Creates the date pickers display date.
+ *
+ * @param date
+ * @returns {Element}
+ * @private
+ */
+const _createDay = date => {
+    return _factor('day', /* date.getDate() */);
+};
+
+/**
+ * Creates the date pickers display year.
+ *
+ * @param date
+ * @returns {Element}
+ * @private
+ */
+const _createYear = date => {
+    return _factor('year', /* date.getFullYear() */);
+};
+
+const _createCalendar = () => {
+    return _factor('calendar');
+};
+
+const _createNavigation = () => {
+    return _factor('navigation');
+};
+
+const _createPrevious = () => {
+    const btn = document.createElement('button');
+    btn.classList.add('previous');
+    btn.innerText = '-';
+
+    return btn;
+};
+const _createNext = () => {
+    const btn = document.createElement('button');
+    btn.classList.add('next');
+    btn.innerText = '+';
+
+    return btn;
+};
+
+const _createWeekdayNames = () => {
+    const wrapper = _factor('weekday-names');
+    let day;
+    let i = 0;
+
+    for (; i < Lang.weekdaysShort.length; i++) {
+        day = document.createElement('div');
+        day.innerText = Lang.weekdaysShort[i];
+        wrapper.appendChild(day);
+    }
+
+    return wrapper;
+};
+
 const _createDays = date => {
-	const data = calendarData(date);
-	let i = 0;
-	let day;
-	let row;
-	
-	daysWrapper = document.createElement('div');
-	daysWrapper.classList.add('days-wrapper');
-	data.length / 7 === 4 ? daysWrapper.classList.add('four') : null;
-	data.length / 7 === 5 ? daysWrapper.classList.add('five') : null;
-	data.length / 7 === 6 ? daysWrapper.classList.add('six') : null;
-	
-	for (; i < data.length; i++) {
-		if (i % 7 === 0) {
-			row = document.createElement('div');
-			row.classList.add('week');
-		}
-		
-		day = document.createElement('div');
-		day.classList.add('day');
-		date.getMonth() !== data[i].getMonth() ? day.classList.add('other-month') : null;
-		day.innerText = data[i].getDate();
-		
-		row.appendChild(day);
-		if (i % 7 === 6) {
-			daysWrapper.appendChild(row);
-		}
-	}
-	
-	return daysWrapper;
+    const data = calendarData(date);
+    const daysWrapper = _factor('days');
+    let i = 0;
+    let day;
+    let row;
+
+    for (; i < data.length; i++) {
+        if (i % 7 === 0) {
+            row = _factor('row');
+        }
+
+        day = _factor('day', data[i].getDate());
+        date.getMonth() !== data[i].getMonth() ? day.classList.add('other-month') : null;
+
+        row.appendChild(day);
+        if (i % 7 === 6) {
+            daysWrapper.appendChild(row);
+        }
+    }
+
+    return daysWrapper;
 };
 
-/**
- * Creates the actions.
- * There is a preview of the selected date and buttons to reset and submit the selected date.
- * @private
- */
+const _createTimePicker = () => {
+    // Todo: Add translations for placeholder
+    const timePicker = _factor('time-picker');
+    const hours = document.createElement('input');
+    hours.classList.add('hours');
+    hours.setAttribute('type', 'text');
+    hours.setAttribute('placeholder', 'hours');
+    const minutes = document.createElement('input');
+    minutes.classList.add('minutes');
+    minutes.setAttribute('type', 'text');
+    minutes.setAttribute('placeholder', 'minutes');
+
+    timePicker.appendChild(hours);
+    timePicker.appendChild(minutes);
+
+    return timePicker;
+};
+
 const _createActions = () => {
-	const wrapper = document.createElement('div');
-	const previewWrapper = document.createElement('div');
-	const actionsWrapper = document.createElement('div');
-	const reset = document.createElement('div');
-	const submit = document.createElement('div');
-	const resetBtn = document.createElement('button');
-	const submitBtn = document.createElement('button');
-	preview = document.createElement('div');
-	
-	const timeWrapper = document.createElement('div');
-	const timeInputs = document.createElement('div');
-	const timeTitle = document.createElement('div');
-	const hours = document.createElement('input');
-	const minutes = document.createElement('input');
-	
-	// set element classes and inner text
-	wrapper.classList.add('actions-wrapper');
-	previewWrapper.classList.add('preview-wrapper');
-	preview.classList.add('preview');
-	actionsWrapper.classList.add('btn-wrapper');
-	reset.classList.add('reset');
-	submit.classList.add('submit');
-	resetBtn.innerText = 'Reset';
-	submitBtn.innerText = 'Submit';
-	
-	timeWrapper.classList.add('time-wrapper');
-	timeInputs.classList.add('time-input');
-	timeTitle.classList.add('time-title');
-	timeTitle.innerText = 'Time:';
-	hours.classList.add('hours');
-	hours.setAttribute('placeholder', 'hours');
-	minutes.classList.add('minutes');
-	minutes.setAttribute('placeholder', 'minutes');
-	
-	// connect dom elements
-	reset.appendChild(resetBtn);
-	submit.appendChild(submitBtn);
-	timeInputs.appendChild(hours);
-	timeInputs.appendChild(minutes);
-	timeWrapper.appendChild(timeTitle);
-	timeWrapper.appendChild(timeInputs);
-	actionsWrapper.appendChild(reset);
-	actionsWrapper.appendChild(submit);
-	previewWrapper.appendChild(preview);
-	previewWrapper.appendChild(timeWrapper);
-	wrapper.appendChild(previewWrapper);
-	wrapper.appendChild(actionsWrapper);
-	
-	return wrapper;
+    return _factor('actions');
 };
 
-/**
- * Public methods to create the date-picker layout
- */
+const _createToday = () => {
+    // Todo: Add translations
+    const today = _factor('today');
+    const btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.innerText = 'Today';
+    today.appendChild(btn);
+
+    return today;
+};
+
+const _createReset = () => {
+    // Todo: Add translations
+    const reset = _factor('reset');
+    const btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.innerText = 'Reset';
+    reset.appendChild(btn);
+
+    return reset;
+};
+const _createSubmit = () => {
+    // Todo: Add translations
+    const submit = _factor('submit');
+    const btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.innerText = 'Submit';
+    submit.appendChild(btn);
+
+    return submit;
+};
+
 export default {
-	/**
-	 * Creates the black, fixed overlay.
-	 * @returns {Element}
-	 */
-	createOverlay: () => {
-		const overlay = document.createElement('div');
-		overlay.classList.add('overlay');
-		overlay.setAttribute('id', 'as-datetime-picker');
-		
-		return overlay;
-	},
-	
-	/**
-	 * Creates the flexbox wrapper.
-	 * @returns {Element}
-	 */
-	createWrapper: () => {
-		const wrapper = document.createElement('div');
-		wrapper.classList.add('wrapper');
-		
-		return wrapper;
-	},
-	/**
-	 * Creates the calendar.
-	 * @returns {Element}
-	 */
-	createCalendar: date => {
-		calendar = document.createElement('div');
-		calendar.setAttribute('id', calendarId);
-		calendar.classList.add('calendar');
-		actions = _createActions();
-		
-		calendar.appendChild(_createCalendarNav(date));
-		calendar.appendChild(_createCalendarWeekdays());
-		calendar.appendChild(actions);
-		calendar.insertBefore(_createDays(date), actions);
-		
-		return calendar;
-	},
-	/**
-	 * Rebuilds the dates and month name of the calendar.
-	 * @param {Date} date Current date of calendar.js.
-	 */
-	rebuildCalendar: date => {
-		daysWrapper.remove();
-		calendar.insertBefore(_createDays(date), actions);
-		month.innerText = date.getMonthName() + ' (' + date.getFullYear() + ')';
-		Events.selectDate(date);
-	},
-	/**
-	 * Returns the id of the calendar.
-	 */
-	getCalendarId: () => {
-		return calendarId;
-	},
-	/**
-	 * Selects a date.
-	 * @param {string} day
-	 * @param {Date} date
-	 */
-	selectDate: (day, date) => {
-		selected = new Date(date);
-		selected.setMonth(selected.getMonth(), day);
-		
-		preview.innerText = formatter('dd.mm.yyyy', selected);
-	},
-	/**
-	 * Resets the current selected date.
-	 */
-	reset: () => {
-		selected = null;
-		preview.innerText = '';
-	},
-	/**
-	 * Returns the selected date.
-	 * @returns {*}
-	 */
-	getSelected: () => {
-		return selected;
-	}
-}
+    overlay: _createOverlay,
+    wrapper: _createWrapper,
+    calendarWrapper: _createCalendarWrapper,
+    dayNameWrapper: _createDayNameWrapper,
+    display: _createDisplay,
+    month: _createMonth,
+    day: _createDay,
+    year: _createYear,
+    calendar: _createCalendar,
+    navigation: _createNavigation,
+    previous: _createPrevious,
+    next: _createNext,
+    weekdayNames: _createWeekdayNames,
+    days: _createDays,
+    timePicker: _createTimePicker,
+    actions: _createActions,
+    today: _createToday,
+    reset: _createReset,
+    submit: _createSubmit
+};

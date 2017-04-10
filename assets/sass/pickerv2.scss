@@ -74,20 +74,31 @@ $divider-dark-color: rgba(0, 0, 0, .12);
 					.navigation {
 						display: flex;
 						height:  2rem;
-						padding: .5rem 0;
+						padding: 0 0 .5rem; //.5rem 0;
 						
-						div {
+						button {
 							flex:            1 1 0;
-							text-align:      center;
-							height:          inherit;
-							display:         flex;
-							align-items:     center;
-							justify-content: center;
-							transition:      all .5s ease;
-							cursor:          pointer;
+							border:           none;
+							height:           100%;
+							width:            100%;
+							background-color: $primary-light-text-color;
+							transition:       background-color .3s ease;
+							cursor:           pointer;
+							font-size:        16px;
+							color:            $accent-color;
 							
 							&:hover {
-								box-shadow: 0 1px 2px $disabled-dark-text-color;
+								background-color: darken($accent-color, 5);
+								color:            $primary-light-text-color;
+							}
+							&:focus {
+								outline:          none;
+								background-color: darken($accent-color, 10);
+								color:            $primary-light-text-color;
+							}
+							
+							&:first-of-type {
+								border-right: 1px solid $divider-light-color;
 							}
 						}
 						.previous {
