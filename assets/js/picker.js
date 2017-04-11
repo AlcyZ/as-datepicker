@@ -12,39 +12,26 @@ import Events from './events';
 let date;
 
 const _createLayout = () => {
-    LayoutBuilder.createPicker(date);
+	LayoutBuilder.createPicker(date);
 };
 
 const _setEvents = e => {
-    Events.previous(date);
-    Events.next(date);
-    Events.close();
-    Events.selectDate(date);
-    Events.reset();
-    Events.today();
-
-    Events.hoursValidator();
-    Events.minutesValidator();
-
-    /** Today and submit is left */
-    // static event handler
-    // Events.close(overlay, wrapper);
-    // Events.reset();
-    // Events.hoursValidator();
-    // Events.minutesValidator();
-    // Events.submit(e.target);
-
-    // dynamic calls of events
-    // document.querySelector('#' + LayoutFactory.getCalendarId() + ' .previous')
-    // 	.addEventListener('click', e => Events.previous(e, date));
-    // document.querySelector('#' + LayoutFactory.getCalendarId() + ' .next')
-    // 	.addEventListener('click', e => Events.next(e, date));
+	Events.close();
+	Events.previous(date);
+	Events.next(date);
+	Events.selectDate(date);
+	Events.reset();
+	Events.today();
+	Events.submit(e.target);
+	Events.hoursValidator();
+	Events.minutesValidator();
+	
 };
 
 export default {
-    bootstrap: e => {
-        date = new Date();
-        _createLayout();
-        _setEvents(e);
-    }
+	bootstrap: e => {
+		date = new Date();
+		_createLayout();
+		_setEvents(e);
+	}
 }
