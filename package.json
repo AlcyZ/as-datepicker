@@ -2,7 +2,7 @@
   "name": "as-datepicker",
   "license": "MIT",
   "description": "ES6 vanilla js datepicker widget without dependencies",
-  "main": "assets/js/calendar.js",
+  "main": "dist/js/datepicker.js",
   "version": "0.0.4",
   "devDependencies": {
     "cross-env": "^3.2.4",
