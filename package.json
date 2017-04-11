@@ -3,7 +3,7 @@
   "license": "MIT",
   "description": "ES6 vanilla js datepicker widget without dependencies",
   "main": "dist/js/datepicker.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "devDependencies": {
     "cross-env": "^3.2.4",
     "laravel-mix": "^0.8.8"
